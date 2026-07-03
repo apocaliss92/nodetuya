@@ -9,7 +9,13 @@ export {
   TuyaProtocolError,
   TuyaTransportError,
   TuyaAuthError,
+  TuyaCloudError,
 } from './transport/errors.js';
+
+// Cloud provisioning (fetch device localKeys from a Tuya IoT project)
+export { TuyaCloud } from './cloud/tuya-cloud.js';
+export { TUYA_REGIONS } from './cloud/types.js';
+export type { TuyaCloudOptions, TuyaRegion, CloudDevice } from './cloud/types.js';
 
 // Device
 export { TuyaDevice } from './device/tuya-device.js';

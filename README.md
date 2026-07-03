@@ -70,6 +70,36 @@ const devices = await discoverDevices({ timeoutMs: 6000 });
 
 ---
 
+## Getting device keys from the cloud (`TuyaCloud`)
+
+You need each device's **`localKey`** to control it locally. Tuya only exposes it through the IoT
+project API — so the library ships a `TuyaCloud` helper that fetches all your devices (id, `localKey`,
+IP, category, sub-device node ids) in one call.
+
+```ts
+import { TuyaCloud, TuyaDevice } from '@apocaliss92/nodetuya';
+
+const cloud = new TuyaCloud({ accessId: 'xxxx', accessSecret: 'yyyy', region: 'eu' });
+const devices = await cloud.getDevices();
+// → [{ id, name, localKey, ip?, category, productId, online, nodeId?, ... }]
+
+// Pipe straight into a local connection:
+const d = devices.find((x) => x.name === 'Kitchen plug');
+const device = new TuyaDevice({
+  id: d.id,
+  key: d.localKey,
+  host: d.ip ?? '192.168.1.50',
+  version: '3.3',
+});
+await device.connect();
+```
+
+> **What credentials?** Not your app email/password — those can't retrieve `localKey` via any stable
+> API. Create a **free Tuya IoT project** at [iot.tuya.com](https://iot.tuya.com), then
+> _Cloud → Development → your project → Link Tuya App Account_ and scan the QR with your Smart Life /
+> Tuya app. The project's **Access ID** and **Access Secret** (+ its data-center region) are what
+> `TuyaCloud` uses. This is the same one-time setup that tinytuya / localtuya require.
+
 ## Supported protocol versions
 
 | Version   | Encryption                                | Framing            | Status    |

@@ -25,3 +25,13 @@ export class TuyaAuthError extends TuyaError {
     this.name = 'TuyaAuthError';
   }
 }
+/** Tuya IoT Cloud API failure (bad credentials, region mismatch, or a non-success response). */
+export class TuyaCloudError extends TuyaError {
+  /** Tuya application error code (e.g. 1004 = sign invalid, 1106 = permission), when available. */
+  readonly code?: number;
+  constructor(message: string, code?: number) {
+    super(message);
+    this.name = 'TuyaCloudError';
+    this.code = code;
+  }
+}
