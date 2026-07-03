@@ -21,5 +21,7 @@ const devices = await cloud.getDevices();
 console.log(`\n${devices.length} device(s):\n`);
 for (const d of devices) {
   console.log(`- ${d.name}`);
-  console.log(`    id=${d.id} key=${d.localKey}${d.ip ? ' ip=' + d.ip : ''}${d.nodeId ? ' node_id=' + d.nodeId : ''} category=${d.category ?? ''} online=${d.online}`);
+  console.log(
+    `    id=${d.id} key=${d.localKey}${d.ip ? ' ip=' + d.ip : ''}${d.nodeId ? ' node_id=' + d.nodeId : ''} category=${d.category ?? ''} online=${d.online}`,
+  );
 }

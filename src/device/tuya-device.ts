@@ -253,6 +253,16 @@ export class TuyaDevice extends TypedEmitter<TuyaDeviceEvents> {
   private handleClose(): void {
     this.stopHeartbeat();
     this.socket = null;
+    // Fail any in-flight requests fast instead of waiting for their timeout. A reset right after
+    // connect usually means the device is already connected elsewhere (Tuya allows one TCP client).
+    for (const p of this.pending.splice(0)) {
+      clearTimeout(p.timer);
+      p.reject(
+        new TuyaTransportError(
+          'connection closed by device (already connected elsewhere, e.g. Home Assistant?)',
+        ),
+      );
+    }
     this.emit('disconnected', undefined);
   }
 }

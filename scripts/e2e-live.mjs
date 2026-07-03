@@ -17,6 +17,7 @@ if (!id || !key || !host) {
 
 const device = new TuyaDevice({ id, key, host, version, timeoutMs: 6000 });
 device.on('dps', (changed) => console.log('push:', changed));
+device.on('error', (err) => console.error('socket error:', err.message)); // don't crash on reset
 
 console.log(`Connecting to ${host} (protocol ${version})…`);
 await device.connect();
